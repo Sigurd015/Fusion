@@ -1,0 +1,1 @@
+# C++ Xmake Project Starter Template
