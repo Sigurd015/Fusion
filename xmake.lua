@@ -36,7 +36,7 @@ rule("mode.Debug")
                 target:add("ldflags", "-static")
             end
 
-            target:add("defines", "DEBUG")
+            target:add("defines", "FUSION_DEBUG")
         end
     end)
 rule_end()
@@ -58,7 +58,7 @@ rule("mode.Release")
                 target:add("ldflags", "-static")
             end
 
-            target:add("defines", "RELEASE")
+            target:add("defines", "FUSION_RELEASE")
         end
     end)
 rule_end()
@@ -80,7 +80,7 @@ rule("mode.Dist")
                 target:add("ldflags", "-static")
             end
 
-            target:add("defines", "DIST")
+            target:add("defines", "FUSION_DIST")
         end
     end)
 rule_end()
@@ -98,4 +98,4 @@ end
 add_rules("mode.Debug", "mode.Release", "mode.Dist")
 
 includes("Core")
-includes("App")
+includes("Test")
