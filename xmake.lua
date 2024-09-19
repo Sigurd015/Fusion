@@ -93,6 +93,12 @@ if is_plat("windows") then
     add_cxxflags("/EHsc")
     add_cxxflags("/Zc:preprocessor")
     add_cxxflags("/Zc:__cplusplus")
+    add_defines("FUSION_PLATFORM_WINDOWS")
+end
+
+-- MacOS specific configuration
+if is_plat("macosx") then
+    add_defines("FUSION_PLATFORM_MACOS")
 end
 
 add_rules("mode.Debug", "mode.Release", "mode.Dist")
