@@ -1,5 +1,5 @@
 -- Set project name
-set_project("Template")
+set_project("Fusion")
 
 -- Set language version
 set_languages("cxx20")
@@ -104,4 +104,4 @@ end
 add_rules("mode.Debug", "mode.Release", "mode.Dist")
 
 includes("Core")
-includes("Test")
+includes("Examples")
