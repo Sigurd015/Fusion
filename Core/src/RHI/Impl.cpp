@@ -4,9 +4,7 @@
 // Vulkan
 #include "../Backend/Vulkan/VulkanContext.h"
 
-#if defined(FUSION_PLATFORM_WINDOWS)
-
-#endif
+#include <GLFW/glfw3.h>
 
 namespace Fusion
 {

@@ -8,7 +8,7 @@
 #include <GLFW/glfw3native.h>
 #endif
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 	if (!glfwInit())
 	{
@@ -20,19 +20,19 @@ int main(int argc, char **argv)
 
 	std::string title = "Fusion Test";
 
-	GLFWwindow *window = glfwCreateWindow(1920, 1080, title.c_str(), NULL, NULL);
+	Fusion::RendererConfig config;
+	config.APIType = Fusion::RendererAPIType::Vulkan;
+	config.Width = 1920;
+	config.Height = 1080;
+	config.VSync = true;
+
+	GLFWwindow* window = glfwCreateWindow(config.Width, config.Height, title.c_str(), NULL, NULL);
 	if (!window)
 	{
 		std::cerr << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
-
-	Fusion::RendererConfig config;
-	config.APIType = Fusion::RendererAPIType::Vulkan;
-	config.Width = 1920;
-	config.Height = 1080;
-	config.VSync = true;
 
 	switch (config.APIType)
 	{
@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 	glfwSetWindowTitle(window, title.c_str());
 	Fusion::Renderer::Init(config);
 
-	BaseTest *test = new DefaultTest();
+	BaseTest* test = new DefaultTest();
 	test->OnAttach();
 
 	float lastFrameTime = 0.0f;

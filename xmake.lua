@@ -29,14 +29,6 @@ rule("mode.Debug")
             if not target:get("optimize") then
                 target:set("optimize", "none")
             end
-
-            if is_plat("windows") then
-                target:add("cxflags", "/MDd")
-            elseif is_plat("macosx") or is_plat("linux") then
-                target:add("ldflags", "-static")
-            end
-
-            target:add("defines", "FUSION_DEBUG")
         end
     end)
 rule_end()
@@ -51,14 +43,6 @@ rule("mode.Release")
             if not target:get("optimize") then
                 target:set("optimize", "fastest")
             end
-
-            if is_plat("windows") then
-                target:add("cxflags", "/MD")
-            elseif is_plat("macosx") or is_plat("linux") then
-                target:add("ldflags", "-static")
-            end
-
-            target:add("defines", "FUSION_RELEASE")
         end
     end)
 rule_end()
@@ -73,14 +57,6 @@ rule("mode.Dist")
             if not target:get("optimize") then
                 target:set("optimize", "fastest")
             end
-
-            if is_plat("windows") then
-                target:add("cxflags", "/MT")
-            elseif is_plat("macosx") or is_plat("linux") then
-                target:add("ldflags", "-static")
-            end
-
-            target:add("defines", "FUSION_DIST")
         end
     end)
 rule_end()
@@ -93,12 +69,6 @@ if is_plat("windows") then
     add_cxxflags("/EHsc")
     add_cxxflags("/Zc:preprocessor")
     add_cxxflags("/Zc:__cplusplus")
-    add_defines("FUSION_PLATFORM_WINDOWS")
-end
-
--- MacOS specific configuration
-if is_plat("macosx") then
-    add_defines("FUSION_PLATFORM_MACOS")
 end
 
 add_rules("mode.Debug", "mode.Release", "mode.Dist")

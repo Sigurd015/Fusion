@@ -9,7 +9,7 @@ void DefaultTest::OnAttach()
 
 void DefaultTest::OnUpdate(float deltaTime)
 {
-    std::cout << "DefaultTest::OnUpdate: " << deltaTime << "s\n";
+    //std::cout << "DefaultTest::OnUpdate: " << deltaTime << "s\n";
 }
 
 void DefaultTest::OnDetach()
