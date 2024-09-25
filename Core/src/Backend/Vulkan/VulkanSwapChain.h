@@ -2,8 +2,6 @@
 #include "Vulkan.h"
 #include "VulkanDevice.h"
 
-#include <GLFW/glfw3.h>
-
 namespace Fusion
 {
 	class VulkanSwapChain
@@ -12,8 +10,8 @@ namespace Fusion
 		VulkanSwapChain() = default;
 
 		void Init(VkInstance instance, const Ref<VulkanDevice>& device);
-		void InitSurface(GLFWwindow* windowHandle);
-		void Create(uint32_t width, uint32_t height, bool vsync);
+		void InitSurface(void* handle);
+		void Create(uint32_t* width, uint32_t* height, bool vsync);
 		void Destroy();
 	private:
 		void FindImageFormatAndColorSpace();

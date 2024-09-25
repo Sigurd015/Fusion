@@ -2,6 +2,13 @@
 
 #include <format>
 
+#if defined(FUSION_PLATFORM_WINDOWS)
+#include <Windows.h>
+#include <vulkan/vulkan_win32.h>
+#elif defined(FUSION_PLATFORM_MACOS)
+#include <vulkan/vulkan_macos.h>
+#endif
+
 // Macro to get a procedure address based on a vulkan instance
 #define GET_INSTANCE_PROC_ADDR(inst, entrypoint)                        \
 {                                                                       \
@@ -50,11 +57,24 @@ namespace Fusion
 		//GET_INSTANCE_PROC_ADDR(instance, GetQueueCheckpointDataNV);
 	}
 
-	void VulkanSwapChain::InitSurface(GLFWwindow* windowHandle)
+	void VulkanSwapChain::InitSurface(void* handle)
 	{
 		VkPhysicalDevice physicalDevice = m_Device->GetPhysicalDevice()->GetVulkanPhysicalDevice();
 
-		glfwCreateWindowSurface(m_Instance, windowHandle, nullptr, &m_Surface);
+#if defined(FUSION_PLATFORM_WINDOWS)
+		VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = {};
+		surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+		surfaceCreateInfo.hinstance = (HINSTANCE)GetModuleHandle(NULL);
+		surfaceCreateInfo.hwnd = (HWND)handle;
+		VK_CHECK_RESULT(vkCreateWin32SurfaceKHR(m_Instance, &surfaceCreateInfo, nullptr, &m_Surface));
+#elif defined(FUSION_PLATFORM_MACOS)
+		VkMacOSSurfaceCreateInfoMVK surfaceCreateInfo = {};
+		surfaceCreateInfo.sType = VK_STRUCTURE_TYPE_MACOS_SURFACE_CREATE_INFO_MVK;
+		surfaceCreateInfo.pNext = NULL;
+		surfaceCreateInfo.flags = 0;
+		surfaceCreateInfo.pView = handle;
+		VK_CHECK_RESULT(vkCreateMacOSSurfaceMVK(m_Instance, &surfaceCreateInfo, NULL, &m_Surface));
+#endif
 
 		// Get available queue family properties
 		uint32_t queueCount;
@@ -116,7 +136,7 @@ namespace Fusion
 		FindImageFormatAndColorSpace();
 	}
 
-	void VulkanSwapChain::Create(uint32_t width, uint32_t height, bool vsync)
+	void VulkanSwapChain::Create(uint32_t* width, uint32_t* height, bool vsync)
 	{
 		m_VSync = vsync;
 
@@ -142,23 +162,22 @@ namespace Fusion
 		{
 			// If the surface size is undefined, the size is set to
 			// the size of the images requested.
-			swapchainExtent.width = width;
-			swapchainExtent.height = height;
+			swapchainExtent.width = *width;
+			swapchainExtent.height = *height;
 		}
-		// TODO:: Check if this is necessary, also down below if
-		//else
-		//{
-		//	// If the surface size is defined, the swap chain size must match
-		//	swapchainExtent = surfCaps.currentExtent;
-		//	*width = surfCaps.currentExtent.width;
-		//	*height = surfCaps.currentExtent.height;
-		//}
+		else
+		{
+			// If the surface size is defined, the swap chain size must match
+			swapchainExtent = surfCaps.currentExtent;
+			*width = surfCaps.currentExtent.width;
+			*height = surfCaps.currentExtent.height;
+		}
 
-		m_Width = width;
-		m_Height = height;
+		m_Width = *width;
+		m_Height = *height;
 
-		//if (width == 0 || height == 0)
-		//	return;
+		if (*width == 0 || *height == 0)
+			return;
 
 		// Select a present mode for the swapchain
 

@@ -253,7 +253,7 @@ namespace Fusion
 		if (m_PhysicalDevice->IsExtensionSupported(VK_NV_DEVICE_DIAGNOSTICS_CONFIG_EXTENSION_NAME))
 			deviceExtensions.push_back(VK_NV_DEVICE_DIAGNOSTICS_CONFIG_EXTENSION_NAME);
 
-#ifndef HNB_DIST
+#ifndef FUSION_DIST
 		// TODO: Nvidias Aftermath GPU crash debugging
 		//VkDeviceDiagnosticsConfigCreateInfoNV aftermathInfo = {};
 		//bool canEnableAftermath = enableAftermath && m_PhysicalDevice->IsExtensionSupported(VK_NV_DEVICE_DIAGNOSTIC_CHECKPOINTS_EXTENSION_NAME) && m_PhysicalDevice->IsExtensionSupported(VK_NV_DEVICE_DIAGNOSTICS_CONFIG_EXTENSION_NAME);
@@ -275,7 +275,7 @@ namespace Fusion
 		VkDeviceCreateInfo deviceCreateInfo = {};
 		deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
-#ifndef HNB_DIST
+#ifndef FUSION_DIST
 		//if (canEnableAftermath)
 		//	deviceCreateInfo.pNext = &aftermathInfo;
 #endif

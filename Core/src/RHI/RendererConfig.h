@@ -15,8 +15,6 @@ namespace Fusion
 	{
 		RendererAPIType APIType;
 
-		void* WindowHandle;
-		uint32_t Width, Height;
-		bool VSync;
+		uint32_t FramesInFlight = 3;
 	};
 }

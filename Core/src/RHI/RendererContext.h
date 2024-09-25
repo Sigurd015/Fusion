@@ -6,6 +6,6 @@ namespace Fusion
 	class RendererContext
 	{
 	public:
-		static Scope<RendererContext> Create(void* window, uint32_t width, uint32_t height, bool vsync);
+		static Scope<RendererContext> Create(void* handle, uint32_t* width, uint32_t* height, bool vsync);
 	};
 }

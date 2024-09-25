@@ -3,20 +3,19 @@
 
 namespace Fusion
 {
+	static RendererConfig s_Config;
+
 	struct RendererData
 	{
-		RendererConfig s_Config;
 		Scope<RendererContext> Context;
 	};
-
 	static RendererData* s_Data = nullptr;
 
-	void Renderer::Init(const RendererConfig& config)
+	void Renderer::Init(void* handle, uint32_t* width, uint32_t* height, bool vsync)
 	{
 		s_Data = new RendererData();
-		s_Data->s_Config = config;
 
-		s_Data->Context = RendererContext::Create(s_Data->s_Config.WindowHandle, s_Data->s_Config.Width, s_Data->s_Config.Height, s_Data->s_Config.VSync);
+		s_Data->Context = RendererContext::Create(handle, width, height, vsync);
 	}
 
 	void Renderer::Shutdown()
@@ -30,6 +29,11 @@ namespace Fusion
 
 	const RendererConfig& Renderer::GetConfig()
 	{
-		return s_Data->s_Config;
+		return s_Config;
+	}
+
+	void Renderer::SetConfig(const RendererConfig& config)
+	{
+		s_Config = config;
 	}
 }

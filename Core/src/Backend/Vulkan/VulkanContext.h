@@ -4,14 +4,12 @@
 #include "VulkanSwapChain.h"
 #include "RendererContext.h"
 
-#include <GLFW/glfw3.h>
-
 namespace Fusion
 {
 	class VulkanContext : public RendererContext
 	{
 	public:
-		VulkanContext(GLFWwindow* windowHandle, uint32_t width, uint32_t height, bool vsync);
+		VulkanContext(void* handle, uint32_t* width, uint32_t* height, bool vsync);	
 		~VulkanContext();
 
 		static VkInstance GetInstance() { return s_VulkanInstance; }

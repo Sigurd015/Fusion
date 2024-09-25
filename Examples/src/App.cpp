@@ -4,7 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#if defined(FUSION_PLATFORM_WINDOWS)
+#if defined(PLATFORM_WINDOWS)
+#include <Windows.h>
 #include <GLFW/glfw3native.h>
 #endif
 
@@ -20,13 +21,16 @@ int main(int argc, char** argv)
 
 	std::string title = "Fusion Test";
 
+	// Set the renderer config
 	Fusion::RendererConfig config;
 	config.APIType = Fusion::RendererAPIType::Vulkan;
-	config.Width = 1920;
-	config.Height = 1080;
-	config.VSync = true;
+	Fusion::Renderer::SetConfig(config);
 
-	GLFWwindow* window = glfwCreateWindow(config.Width, config.Height, title.c_str(), NULL, NULL);
+	uint32_t wnd_width = 1920;
+	uint32_t wnd_height = 1080;
+	bool wnd_vsync = true;
+
+	GLFWwindow* window = glfwCreateWindow(wnd_width, wnd_height, title.c_str(), NULL, NULL);
 	if (!window)
 	{
 		std::cerr << "Failed to create GLFW window" << std::endl;
@@ -38,14 +42,11 @@ int main(int argc, char** argv)
 	{
 	case Fusion::RendererAPIType::Vulkan:
 		title += " <Vulkan>";
-		config.WindowHandle = window;
 		break;
 
 #if defined(FUSION_PLATFORM_WINDOWS)
 	case Fusion::RendererAPIType::DX12:
 		title += " <DX12>";
-		//HWND winWnd = glfwGetWin32Window(window);
-		//config.WindowHandle = winWnd;
 		break;
 #endif
 
@@ -57,7 +58,8 @@ int main(int argc, char** argv)
 	}
 
 	glfwSetWindowTitle(window, title.c_str());
-	Fusion::Renderer::Init(config);
+
+	Fusion::Renderer::Init(glfwGetWin32Window(window), &wnd_width, &wnd_height, wnd_vsync);
 
 	BaseTest* test = new DefaultTest();
 	test->OnAttach();

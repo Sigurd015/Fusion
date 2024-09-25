@@ -92,9 +92,8 @@ namespace Fusion
 		return true;
 	}
 
-	VulkanContext::VulkanContext(GLFWwindow* windowHandle, uint32_t width, uint32_t height, bool vsync)
+	VulkanContext::VulkanContext(void* handle, uint32_t* width, uint32_t* height, bool vsync)
 	{
-		FUSION_ASSERT(glfwVulkanSupported(), "GLFW must support Vulkan!");
 		FUSION_ASSERT(!s_VulkanInstance, "VulkanContext already exists!");
 
 		if (!CheckDriverAPIVersionSupport(VK_API_VERSION_1_2))
@@ -121,7 +120,7 @@ namespace Fusion
 		// Create SwapChain
 		m_SwapChain = CreateRef<VulkanSwapChain>();
 		m_SwapChain->Init(s_VulkanInstance, m_Device);
-		m_SwapChain->InitSurface(windowHandle);
+		m_SwapChain->InitSurface(handle);
 		m_SwapChain->Create(width, height, vsync);
 	}
 
@@ -179,7 +178,6 @@ namespace Fusion
 		std::vector<VkLayerProperties> instanceLayerProperties(instanceLayerCount);
 		vkEnumerateInstanceLayerProperties(&instanceLayerCount, instanceLayerProperties.data());
 		bool validationLayerPresent = false;
-
 		for (const VkLayerProperties& layer : instanceLayerProperties)
 		{
 			if (strcmp(layer.layerName, validationLayerName) == 0)

@@ -9,8 +9,6 @@ if is_plat("windows") then
     add_defines("FUSION_PLATFORM_WINDOWS")
 elseif is_plat("macosx") then
     add_defines("FUSION_PLATFORM_MACOS")
-elseif is_plat("linux") then
-    add_defines("FUSION_PLATFORM_LINUX")
 end
 
 if is_mode("Debug") then
@@ -21,20 +19,15 @@ elseif is_mode("Dist") then
     add_defines("FUSION_DIST")
 end
 
-add_requires("glm", "glfw")
+add_requires("glm")
 
 target("Core")
     set_kind("static")
     set_pcxxheader("src/pch.h")
     add_headerfiles("src/**.h")
     add_files("src/**.cpp")
-    add_packages("glm", "glfw")
+    add_packages("glm")
     add_includedirs(VULKAN_SDK .. "/Include", "src/RHI")
     add_linkdirs(VULKAN_SDK .. "/Lib")
-    add_links("vulkan-1")
-    
-    add_defines("GLFW_INCLUDE_NONE", "GLM_FORCE_DEPTH_ZERO_TO_ONE")
-
-    if is_plat("windows") then
-        add_defines("GLFW_EXPOSE_NATIVE_WIN32", "GLFW_NATIVE_INCLUDE_NONE")
-    end 
+    add_links("vulkan-1")   
+    add_defines("GLM_FORCE_DEPTH_ZERO_TO_ONE")
